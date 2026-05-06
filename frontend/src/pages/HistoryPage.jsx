@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../hooks'
 import { getT } from '../i18n/translations'
 import toast from 'react-hot-toast'
 import { logger } from '../utils/logger'
@@ -352,3 +352,4 @@ export default function HistoryPage() {
     </div>
   )
 }
+

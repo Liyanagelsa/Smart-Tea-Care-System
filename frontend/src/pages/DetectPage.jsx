@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../hooks'
 import { getT } from '../i18n/translations'
 import { getTreatment } from '../i18n/treatmentTranslations'
 import { useDropzone } from 'react-dropzone'
@@ -544,3 +544,4 @@ export default function DetectPage() {
     </div>
   )
 }
+

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../hooks'
 import { getT, getLanguageName } from '../i18n/translations'
 import { logger } from '../utils/logger'
 import toast from 'react-hot-toast'
@@ -284,6 +284,18 @@ export default function LoginPage() {
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                   </div>
+                  {/* Forgot Password Link - Only show in login mode */}
+                  {mode === 'login' && (
+                    <div className="text-right pt-1">
+                      <button
+                        type="button"
+                        onClick={() => navigate('/forgot-password')}
+                        className="text-sm text-[#00450d] hover:text-[#00560f] font-medium transition"
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Terms Checkbox */}
@@ -483,9 +495,13 @@ export default function LoginPage() {
                   />
                   <span className="text-[#475569] text-xs">{t('rememberMe')}</span>
                 </label>
-                <a href="#" className="text-[#1c5f20] text-xs font-semibold hover:underline">
+                <button
+                  type="button"
+                  onClick={() => navigate('/forgot-password')}
+                  className="text-[#1c5f20] text-xs font-semibold hover:underline"
+                >
                   {t('forgotPassword')}
-                </a>
+                </button>
               </div>
 
               {/* Login Button */}
@@ -535,3 +551,4 @@ export default function LoginPage() {
     </div>
   )
 }
+

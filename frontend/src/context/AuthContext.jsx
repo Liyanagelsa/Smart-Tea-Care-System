@@ -1,49 +1,32 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useState } from 'react'
 import { logger } from '../utils/logger'
+import { storage } from '../utils/storage'
+import { authService } from '../api/authService'
 
-const AuthContext = createContext({})
+export const AuthContext = createContext({})
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001'
 
 logger.info('AuthContext: Using API URL', { API_URL })
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const stored = localStorage.getItem('user')
-    return stored ? JSON.parse(stored) : null
-  })
-  const [profile, setProfile] = useState(() => {
-    const stored = localStorage.getItem('profile')
-    return stored ? JSON.parse(stored) : null
-  })
+  const [user, setUser] = useState(() => storage.getUser())
+  const [profile, setProfile] = useState(() => storage.getProfile())
   const [loading, setLoading] = useState(false)
-  const [language, setLanguage] = useState(() => {
-    return localStorage.getItem('language') || 'en'
-  })
+  const [language, setLanguage] = useState(() => storage.getLanguage())
 
   const signIn = async (email, password) => {
     try {
       logger.info('AuthContext: Signing in via backend', { email })
       setLoading(true)
 
-      const response = await fetch(`${API_URL}/auth/signin`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      })
+      const { data, error } = await authService.signin(email, password)
 
-      if (!response.ok) {
-        const error = await response.json()
-        logger.error('AuthContext', 'Sign in failed', { status: response.status, error })
-        return { data: null, error: { message: error.detail || 'Sign in failed' } }
+      if (error) {
+        return { data: null, error: { message: error } }
       }
 
-      const data = await response.json()
-      logger.auth('Sign in successful', { userId: data.user.id, email: data.user.email })
-
       // Store token and user
-      localStorage.setItem('token', data.access_token)
-      localStorage.setItem('user', JSON.stringify(data.user))
-      localStorage.setItem('profile', JSON.stringify({ ...data.user, role: 'user', language }))
+      storage.setAuthSession(data.access_token, data.user, data.user, language)
 
       setUser(data.user)
       setProfile({ ...data.user, role: 'user', language })
@@ -61,25 +44,18 @@ export const AuthProvider = ({ children }) => {
       logger.info('AuthContext: Signing up via backend', { email, fullName })
       setLoading(true)
 
-      const response = await fetch(`${API_URL}/auth/signup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password,
-          full_name: fullName,
-          plantation_name: plantationName,
-          location: location
-        })
-      })
+      const { data, error } = await authService.signup(
+        email,
+        password,
+        fullName,
+        plantationName,
+        location
+      )
 
-      if (!response.ok) {
-        const error = await response.json()
-        logger.error('AuthContext', 'Sign up failed', { status: response.status, error })
-        return { data: null, error: { message: error.detail || 'Sign up failed' } }
+      if (error) {
+        return { data: null, error: { message: error } }
       }
 
-      const data = await response.json()
       logger.info('Sign up successful', { userId: data.user.id })
       return { data, error: null }
     } catch (error) {
@@ -93,21 +69,14 @@ export const AuthProvider = ({ children }) => {
   const signOut = async () => {
     try {
       logger.info('AuthContext: Signing out')
-      const token = localStorage.getItem('token')
+      const token = storage.getToken()
       if (token) {
-        await fetch(`${API_URL}/auth/signout`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}` }
-        }).catch(() => {
-          // Signout endpoint might not exist, that's okay
-        })
+        await authService.signout(token)
       }
     } catch (error) {
       logger.error('AuthContext', 'signOut error', { message: error.message })
     } finally {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      localStorage.removeItem('profile')
+      storage.clearAuthSession()
       setUser(null)
       setProfile(null)
     }
@@ -115,11 +84,11 @@ export const AuthProvider = ({ children }) => {
 
   const updateLanguage = (lang) => {
     setLanguage(lang)
-    localStorage.setItem('language', lang)
+    storage.setLanguage(lang)
     if (profile) {
       const updated = { ...profile, language: lang }
       setProfile(updated)
-      localStorage.setItem('profile', JSON.stringify(updated))
+      storage.setProfile(updated)
     }
   }
 
@@ -134,8 +103,8 @@ export const AuthProvider = ({ children }) => {
         signUp,
         signOut,
         updateLanguage,
-        isAuthenticated: !!user && !!localStorage.getItem('token'),
-        isAdmin: profile?.role === 'admin'
+        isAuthenticated: !!user && !!storage.getToken(),
+        isAdmin: profile?.role === 'admin',
       }}
     >
       {children}
@@ -143,10 +112,4 @@ export const AuthProvider = ({ children }) => {
   )
 }
 
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider')
-  }
-  return context
-}
+export default AuthProvider

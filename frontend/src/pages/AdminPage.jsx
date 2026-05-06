@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../hooks'
 import { supabase } from '../utils/supabase'
 import { getT } from '../i18n/translations'
 import { format } from 'date-fns'
@@ -233,3 +233,4 @@ function AdminStat({ label, value, icon, color }) {
     </div>
   )
 }
+

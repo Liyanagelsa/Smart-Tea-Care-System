@@ -1,13 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { AuthProvider } from './context/AuthContext'
-import ProtectedLayout from './components/ProtectedLayout'
-import LoginPage from './pages/LoginPage'
-import DashboardPage from './pages/DashboardPage'
-import DetectPage from './pages/DetectPage'
-import HistoryPage from './pages/HistoryPage'
-import ProfilePage from './pages/ProfilePage'
-import AdminPage from './pages/AdminPage'
+import { AuthProvider } from './context'
+import { ProtectedLayout } from './components'
+import {
+  LoginPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  DashboardPage,
+  DetectPage,
+  HistoryPage,
+  ProfilePage,
+  AdminPage,
+} from './pages'
 
 export default function App() {
   return (
@@ -15,6 +19,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/dashboard" element={<ProtectedLayout><DashboardPage /></ProtectedLayout>} />
           <Route path="/detect" element={<ProtectedLayout><DetectPage /></ProtectedLayout>} />
           <Route path="/history" element={<ProtectedLayout><HistoryPage /></ProtectedLayout>} />

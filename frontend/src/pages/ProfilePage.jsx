@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../hooks'
 import { getT, getLanguageName } from '../i18n/translations'
 import { logger } from '../utils/logger'
 import toast from 'react-hot-toast'
@@ -403,3 +403,4 @@ export default function ProfilePage() {
     </div>
   )
 }
+

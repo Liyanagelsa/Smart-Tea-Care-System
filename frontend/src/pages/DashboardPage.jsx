@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../hooks'
 import { getT } from '../i18n/translations'
 import { logger } from '../utils/logger'
 import { format, parseISO } from 'date-fns'
@@ -349,3 +349,4 @@ export default function DashboardPage() {
     </div>
   )
 }
+
