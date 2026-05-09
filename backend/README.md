@@ -10,7 +10,7 @@ license: mit
 
 # Tea Leaf Disease Detection API
 
-FastAPI backend serving a ResNet50 model for detecting tea leaf diseases.
+FastAPI backend serving a CNN model (TensorFlow/Keras) for detecting tea leaf diseases.
 
 ## API Endpoints
 
