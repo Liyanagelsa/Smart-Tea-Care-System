@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile, Depends
+from fastapi import APIRouter, File, UploadFile, Depends, HTTPException
 from typing import Any, Dict, Optional
 from app.services import ModelService, SupabaseService
 from app.utils import logger, get_current_user, create_user_client
@@ -17,7 +17,6 @@ async def predict(
     logger.info(f"POST /predict - User: {current_user['email']}")
 
     if not file.content_type or not file.content_type.startswith("image/"):
-        from fastapi import HTTPException
         raise HTTPException(status_code=400, detail="File must be an image")
 
     try:
@@ -30,9 +29,11 @@ async def predict(
 
         return prediction
 
+    except HTTPException:
+        # Re-raise validation errors without logging traceback
+        raise
     except Exception as e:
         logger.error(f"Error processing image: {str(e)}", exc_info=True)
-        from fastapi import HTTPException
         raise HTTPException(status_code=400, detail="Could not read uploaded image")
 
 
@@ -45,8 +46,6 @@ async def predict_and_save(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Upload image, get prediction, and save to detection history."""
-    from fastapi import HTTPException
-
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File must be an image")
 
@@ -79,6 +78,9 @@ async def predict_and_save(
             "saved_detection": saved_detection
         }
 
+    except HTTPException:
+        # Re-raise validation errors without logging traceback
+        raise
     except Exception as e:
         logger.error(f"Prediction/save failed: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Prediction/save failed: {str(e)}")

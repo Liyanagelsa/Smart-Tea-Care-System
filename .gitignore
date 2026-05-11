@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # Virtual Environment
-venv/
+#venv/
 .env/
 .venv/
 
@@ -49,8 +49,8 @@ htmlcov/
 uploads/
 
 # Model files
-*.pth
-*.pt
+# *.pth
+# *.pt
 
 # FastAPI
 *.db

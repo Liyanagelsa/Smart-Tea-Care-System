@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
       storage.setAuthSession(data.access_token, data.user, data.user, language)
 
       setUser(data.user)
-      setProfile({ ...data.user, role: 'user', language })
+      setProfile({ ...data.user, role: data.user?.role || 'user', language })
       return { data, error: null }
     } catch (error) {
       logger.error('AuthContext', 'signIn error', { message: error.message })

@@ -55,7 +55,7 @@ const animationStyle = `
 `
 
 export default function DashboardPage() {
-  const { user, language } = useAuth()
+  const { user, profile, language } = useAuth()
   const t = getT(language)
   const [recentScans, setRecentScans] = useState([])
   const [loading, setLoading] = useState(true)
@@ -105,7 +105,7 @@ export default function DashboardPage() {
     return t('greeting_evening')
   }
 
-  const userName = user?.user_metadata?.full_name || 'User'
+  const userName = profile?.full_name || user?.full_name || user?.email?.split('@')[0] || 'User'
 
   return (
     <div className="flex-1 min-h-screen flex flex-col relative">

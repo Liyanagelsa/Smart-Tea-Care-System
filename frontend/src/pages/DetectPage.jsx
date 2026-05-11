@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks'
 import { getT } from '../i18n/translations'
@@ -41,8 +41,65 @@ const Chemical = '../../public/icons/Chemical.png'
 const Save = '../../public/icons/Save.png'
 const Scan = '../../public/icons/Scan.png'
 
+const DISEASE_INFO = {
+  'Algal Leaf Spot': {
+    scientificName: 'Cephaleuros virescens',
+    overview: {
+      en: 'Algal Leaf Spot is caused by the parasitic green alga Cephaleuros virescens. It appears as circular, orange-red or rusty patches on leaf surfaces and can reduce photosynthesis, weakening the plant over time if left unmanaged.',
+      si: 'ඇල්ගල් ලීෆ් ස්පොට් රෝගය Cephaleuros virescens නම් ශාකශාකී ශාකයෙකු නිසා ඇති වේ. ශාක පත්‍ර මතු මතුපිට රවුම් හෝ දිලිර ලප ඇති කරයි. නිසි ලෙස ප්‍රතිකාර නොකළ හොත් ශාකයේ ප්‍රකාශ සංස්ලේෂණය අඩු කර ශාකය දුර්වල කරයි.',
+      ta: 'ஆல்கல் இலை புள்ளி நோய் Cephaleuros virescens என்ற பாசி தாவரத்தால் உண்டாகிறது. இது இலை மேற்பரப்பில் வட்டமான, ஆரஞ்சு-சிவப்பு அல்லது துருப்பிடித்த திட்டுகளாக தோன்றும். சரியான சிகிச்சை இல்லாவிட்டால் ஒளிச்சேர்க்கையை குறைத்து தாவரத்தை பலவீனப்படுத்தும்.',
+    },
+    spreadPotentialKey: 'moderate',
+  },
+  'Brown Blight': {
+    scientificName: 'Colletotrichum camelliae',
+    overview: {
+      en: 'Brown Blight is a serious fungal disease caused by Colletotrichum camelliae. It causes dark brown lesions on young leaves and shoots, leading to significant crop loss if left untreated during humid seasons.',
+      si: 'දුඹුරු රෝගය Colletotrichum camelliae නම් දිලිරයෙකු නිසා ඇති වන බරපතල රෝගයකි. තරුණ පත්‍ර සහ අංකුර මත දුඹුරු ලප ඇති කරයි. ජල කාලගුණ සමයේ ප්‍රතිකාර නොකළ හොත් අස්වනු හානිය සැලකිය යුතු ලෙස ඇති වේ.',
+      ta: 'பழுப்பு கருகல் நோய் Colletotrichum camelliae என்ற பூஞ்சையால் உண்டாகும் ஒரு தீவிரமான நோயாகும். இளம் இலைகள் மற்றும் தளிர்களில் கரும்பழுப்பு புண்களை ஏற்படுத்தும். ஈரமான பருவகாலத்தில் சிகிச்சை அளிக்காவிட்டால் கணிசமான பயிர் இழப்பு ஏற்படும்.',
+    },
+    spreadPotentialKey: 'high',
+  },
+  'Gray Blight': {
+    scientificName: 'Pestalotiopsis theae',
+    overview: {
+      en: 'Gray Blight is caused by the fungus Pestalotiopsis theae. It produces gray-brown leaf spots with a distinct margin and can rapidly spread across the canopy in wet conditions, reducing overall harvest quality.',
+      si: 'අළු රෝගය Pestalotiopsis theae නම් දිලිරයෙකු නිසා ඇති වේ. ශාක පත්‍ර මත අළු-දුඹුරු ලප ඇති කරයි. තෙත් කාලගුණ තත්ත්ව යටතේ ශාකයේ ආවරණය හරහා ඉක්මනින් පැතිරෙන අතර අස්වනු ගුණත්වය අඩු කරයි.',
+      ta: 'சாம்பல் கருகல் நோய் Pestalotiopsis theae என்ற பூஞ்சையால் ஏற்படுகிறது. இது தெளிவான விளிம்புடன் சாம்பல்-பழுப்பு இலை புள்ளிகளை உற்பத்தி செய்கிறது. ஈரமான நிலைமைகளில் விரைவாக பரவி ஒட்டுமொத்த அறுவடை தரத்தை குறைக்கும்.',
+    },
+    spreadPotentialKey: 'high',
+  },
+  'Healthy': {
+    scientificName: '',
+    overview: {
+      en: 'No disease detected. The leaf appears healthy with no visible signs of fungal, bacterial, or pest damage. Continue regular agronomic practices to maintain crop health and monitor plants periodically.',
+      si: 'රෝගයක් හඳුනා නොගනී. ශාක පත්‍රය දිලිර, බැක්ටීරියා හෝ කෘමි හානි නොමැතිව සෞඛ්‍ය සම්පන්නව දිස් වේ. අස්වනු සෞඛ්‍යය පවත්වා ගැනීමට සාමාන්‍ය ගොවිතැන් ක්‍රම ඉදිරිපත් කරන්න.',
+      ta: 'நோய் எதுவும் கண்டறியப்படவில்லை. இலை பூஞ்சை, பாக்டீரியா அல்லது பூச்சி சேதத்தின் எந்த அறிகுறியும் இல்லாமல் ஆரோக்கியமாக தோன்றுகிறது. பயிர் ஆரோக்கியத்தை பராமரிக்க வழக்கமான விவசாய நடைமுறைகளை தொடரவும்.',
+    },
+    spreadPotentialKey: 'none',
+  },
+  'Helopeltis': {
+    scientificName: 'Helopeltis theivora',
+    overview: {
+      en: 'Helopeltis (Tea Mosquito Bug) damage is caused by the insect Helopeltis theivora. The pest punctures tender shoots and leaves causing dark lesions and dieback. Severe infestations can cause significant yield and quality losses.',
+      si: 'හෙලොපෙල්ටිස් (තේ මදුරු පළිබෝධ) Helopeltis theivora නම් කෘමියෙකු නිසා ඇති වේ. තරුණ අංකුර සහ පත්‍ර ඇනීම් නිසා අඳුරු ලප හා ශාකය මිය යාම සිදු වේ. දැඩි ප්‍රහාර නිසා සැලකිය යුතු අස්වනු සහ ගුණත්ව හානි ඇති විය හැකිය.',
+      ta: 'ஹெலோபெல்டிஸ் (தேயிலை கொசு பூச்சி) சேதம் Helopeltis theivora என்ற பூச்சியால் ஏற்படுகிறது. பூச்சி இளம் தளிர்கள் மற்றும் இலைகளை குத்தி கரும்புண்கள் மற்றும் இறப்பை ஏற்படுத்தும். கடுமையான தாக்குதல்கள் கணிசமான மகசூல் மற்றும் தர இழப்புகளை ஏற்படுத்தும்.',
+    },
+    spreadPotentialKey: 'high',
+  },
+  'Red Leaf Spot': {
+    scientificName: 'Didymella exitialis',
+    overview: {
+      en: 'Red Leaf Spot is a fungal disease caused by Didymella exitialis. It manifests as reddish-brown circular spots on mature leaves. Wet and humid conditions accelerate its spread throughout the plantation.',
+      si: 'රතු ලප රෝගය Didymella exitialis නම් දිලිරයෙකු නිසා ඇති වේ. මෝළ පත්‍ර මත රතු-දුඹුරු රවුම් ලප ලෙස ප්‍රකාශ වේ. තෙත් සහ ආර්ද්‍ර තත්ත්ව යටතේ ව්‍යාප්තිය ත්වරණය වේ.',
+      ta: 'சிவப்பு இலை புள்ளி நோய் Didymella exitialis என்ற பூஞ்சையால் ஏற்படுகிறது. முதிர்ந்த இலைகளில் சிவப்பு-பழுப்பு வட்ட புள்ளிகளாக வெளிப்படும். ஈரமான மற்றும் ஈரப்பதமான நிலைமைகள் தோட்டம் முழுவதும் பரவுவதை துரிதப்படுத்தும்.',
+    },
+    spreadPotentialKey: 'moderate',
+  },
+}
+
 export default function DetectPage() {
-  const { user, signOut, language } = useAuth()
+  const { user, language } = useAuth()
   const navigate = useNavigate()
   const t = getT(language)
   const [image, setImage] = useState(null)
@@ -51,7 +108,25 @@ export default function DetectPage() {
   const [loading, setLoading] = useState(false)
   const [analyzing, setAnalyzing] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [lastAnalysis, setLastAnalysis] = useState(null)
   const userName = user?.user_metadata?.full_name?.split(' ')[0] || 'User'
+
+  useEffect(() => {
+    const fetchLastAnalysis = async () => {
+      const token = localStorage.getItem('token')
+      if (!token) return
+      try {
+        const res = await fetch(`${API_URL}/detections`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data && data.length > 0) setLastAnalysis(data[0])
+        }
+      } catch (_) {}
+    }
+    fetchLastAnalysis()
+  }, [user])
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0]
@@ -102,9 +177,26 @@ export default function DetectPage() {
       })
 
       if (!response.ok) {
-        const errorText = await response.text()
-        logger.error('DetectPage', 'API error', { status: response.status, error: errorText })
-        throw new Error(`API error: ${response.status}`)
+        let errorMessage = t('analysisFailed')
+
+        try {
+          const errorData = await response.json()
+          // Check if error response has a detail field (FastAPI format)
+          if (errorData.detail) {
+            errorMessage = errorData.detail
+          }
+        } catch (parseError) {
+          // If JSON parsing fails, try text
+          try {
+            const errorText = await response.text()
+            logger.error('DetectPage', 'API error response', { status: response.status, error: errorText })
+          } catch (e) {
+            // Ignore text parsing errors
+          }
+        }
+
+        logger.error('DetectPage', 'API error', { status: response.status, message: errorMessage })
+        throw new Error(errorMessage)
       }
 
       const data = await response.json()
@@ -113,9 +205,16 @@ export default function DetectPage() {
       setResult(data)
       setProgress(100)
       toast.success(`${data.disease} ${t('diseaseDetected')}`)
+      setLastAnalysis({ disease: data.disease, confidence: data.confidence, image_url: image, created_at: new Date().toISOString() })
     } catch (error) {
       logger.error('DetectPage', 'Analysis failed', { message: error.message })
-      toast.error(t('analysisFailed'))
+      toast.error(error.message || t('analysisFailed'))
+
+      // Reset image and state on error
+      setImage(null)
+      setImageFile(null)
+      setResult(null)
+      setProgress(0)
     } finally {
       setLoading(false)
       setAnalyzing(false)
@@ -249,17 +348,17 @@ export default function DetectPage() {
                     <div className="aspect-[4/3] relative bg-gray-100 overflow-hidden">
                       <img src={image} alt="Detected leaf" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(26,28,26,0.4)] to-transparent opacity-60" />
-                      <div className="absolute bottom-24 left-6 flex gap-3 items-center">
-                        <div className="bg-[#ba1a1a] px-3 py-1 rounded-full">
-                          <p className="text-xs font-semibold text-white tracking-[1.2px] uppercase">{t('infected')}</p>
+                      <div className="absolute bottom-6 left-6 flex flex-col gap-2">
+                        <div className={`px-4 py-1.5 rounded-full w-fit ${result.disease === 'Healthy' ? 'bg-[#1b6d24]' : 'bg-[#ba1a1a]'}`}>
+                          <p className="text-xs font-bold text-white tracking-[1.2px] uppercase">
+                            {result.disease === 'Healthy' ? t('healthy') : t('infected')}
+                          </p>
                         </div>
-                        <div className="backdrop-blur-md bg-[rgba(255,255,255,0.2)] px-3 py-1 rounded-full">
-                          <p className="text-xs font-medium text-white">Exobasidium vexans</p>
-                        </div>
+                        <h2 className="text-white text-xl font-bold drop-shadow-lg">{result.disease}</h2>
+                        {DISEASE_INFO[result.disease]?.scientificName && (
+                          <p className="text-white/70 text-xs italic">{DISEASE_INFO[result.disease].scientificName}</p>
+                        )}
                       </div>
-                      {/* <div className="absolute bottom-6 left-6">
-                        <h2 className="text-white text-lg font-bold">Blister Blight Detected</h2>
-                      </div> */}
                     </div>
                   </div>
 
@@ -270,7 +369,9 @@ export default function DetectPage() {
                       <h3 className="text-[#1a1c1a] text-lg font-bold">{t('diseaseOverview')}</h3>
                     </div>
                     <p className="text-[#41493e] text-sm leading-[22px]">
-                      Blister blight is caused by the fungus <i>Exobasidium vexans</i>. It primarily affects the tender young leaves and shoots of the tea plant, which are essential for quality tea production. If left untreated, it can significantly reduce harvest yield and quality.
+                      {DISEASE_INFO[result.disease]?.overview?.[language]
+                        || DISEASE_INFO[result.disease]?.overview?.en
+                        || `${result.disease} detected. Please consult an agronomist for treatment recommendations.`}
                     </p>
                   </div>
                 </div>
@@ -287,8 +388,8 @@ export default function DetectPage() {
 
                     <div className="bg-white rounded-[12px] border-b-4 border-[#533400] shadow-[0px_4px_20px_0px_rgba(26,28,26,0.06)] p-6 flex flex-col gap-3">
                       <p className="text-xs font-normal text-[#41493e] tracking-[1.2px] uppercase">{t('severityLabel')}</p>
-                      <p className="text-3xl font-semibold text-[#533400]">{t('medium')}</p>
-                      <p className="text-xs text-[#41493e]">{t('spreadPotential')}: {t('high')}</p>
+                      <p className="text-3xl font-semibold text-[#533400]">{result.severity_level || 'None'}</p>
+                      <p className="text-xs text-[#41493e]">{t('spreadPotential')}: {t(DISEASE_INFO[result.disease]?.spreadPotentialKey) || '-'}</p>
                     </div>
                   </div>
 
@@ -522,13 +623,23 @@ export default function DetectPage() {
                 {/* Recent Analysis Card */}
                 <div className="bg-white border border-[rgba(192,201,187,0.05)] rounded-[32px] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-4">
                   <div className="flex gap-4 items-center">
-                    <div className="w-16 h-16 rounded-2xl bg-gray-100 flex-shrink-0">
-                      {image && <img src={image} alt="" className="w-full h-full object-cover rounded-2xl" />}
+                    <div className="w-16 h-16 rounded-2xl bg-gray-100 flex-shrink-0 overflow-hidden">
+                      {lastAnalysis?.image_url ? (
+                        <img src={lastAnalysis.image_url} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-2xl">🍃</div>
+                      )}
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <p className="text-[#41493e] text-xs font-semibold tracking-wide uppercase">{t('lastAnalysis')}</p>
-                      <h4 className="text-[#1a1c1a] font-bold mt-1">{t('healthyLeaf')}</h4>
-                      <p className="text-[#1b6d24] text-xs font-medium">99.1% {t('confidence')}</p>
+                      {lastAnalysis ? (
+                        <>
+                          <h4 className="text-[#1a1c1a] font-bold mt-1 truncate">{lastAnalysis.disease}</h4>
+                          <p className="text-[#1b6d24] text-xs font-medium">{Number(lastAnalysis.confidence).toFixed(1)}% {t('confidence')}</p>
+                        </>
+                      ) : (
+                        <p className="text-[#41493e] text-sm mt-1">{t('noData')}</p>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -26,7 +26,30 @@ async def signin(body: SigninRequest):
     """Sign in with Supabase Auth."""
     if not supabase:
         return {"error": "Supabase not configured"}
-    return SupabaseService.signin(supabase, body.email, body.password)
+
+    # Sign in user
+    auth_response = SupabaseService.signin(supabase, body.email, body.password)
+
+    if "error" in auth_response or not auth_response.get("access_token"):
+        return auth_response
+
+    # Fetch user profile with role
+    try:
+        user_client = create_user_client(auth_response["access_token"])
+        profile_result = user_client.table("profiles").select("role, full_name").eq("email", body.email).limit(1).execute()
+
+        if profile_result.data:
+            auth_response["user"]["role"] = profile_result.data[0].get("role", "user")
+            auth_response["user"]["full_name"] = profile_result.data[0].get("full_name", "")
+            logger.info(f"Sign in successful with role - User: {body.email} (Role: {auth_response['user']['role']})")
+        else:
+            auth_response["user"]["role"] = "user"
+            auth_response["user"]["full_name"] = ""
+    except Exception as e:
+        logger.error(f"Error fetching user role: {str(e)}")
+        auth_response["user"]["role"] = "user"
+
+    return auth_response
 
 
 @router.post("/forgot-password")

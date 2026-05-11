@@ -57,7 +57,7 @@ export default function LoginPage() {
 
     try {
       logger.info('LoginPage: Signing in user', { email })
-      const { error } = await signIn(email, password)
+      const { data, error } = await signIn(email, password)
       if (error) {
         logger.error('LoginPage', 'Sign in failed', { error })
         toast.error('Invalid email or password')
@@ -65,8 +65,21 @@ export default function LoginPage() {
         setLoading(false)
         return
       }
+
+      // Check if user is admin via role from backend OR email fallback
+      const userRole = data?.user?.role
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
+      const isAdminUser = userRole === 'admin' || (adminEmail && email.toLowerCase() === adminEmail.toLowerCase())
+
       toast.success('Welcome! 🍃')
-      navigate('/dashboard')
+
+      // Redirect to admin dashboard if admin, else to user dashboard
+      if (isAdminUser) {
+        logger.info('LoginPage: Admin login detected, redirecting to admin dashboard')
+        navigate('/admin')
+      } else {
+        navigate('/dashboard')
+      }
     } catch (err) {
       logger.error('LoginPage', 'Login error', { message: err.message })
       toast.error('An error occurred. Please try again.')
@@ -109,6 +122,7 @@ export default function LoginPage() {
       setAgreeTerms(false)
       setMode('login')
       submitInProgress.current = false
+      setLoading(false)
     } catch (err) {
       logger.error('LoginPage', 'Register error', { message: err.message })
       toast.error('An error occurred. Please try again.')
@@ -541,12 +555,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Floating Support Bubble */}
-        <div className="absolute bottom-8 right-8">
-          <button className="w-12 h-12 rounded-full bg-white border border-[rgba(192,201,187,0.1)] flex items-center justify-center hover:shadow-lg transition-all" title="Need assistance?">
-            <img src={helpIcon} alt="" className="w-5 h-5" />
-          </button>
-        </div>
       </div>
     </div>
   )

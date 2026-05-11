@@ -86,23 +86,31 @@ class ModelService:
             # Parse detections
             detections = cls._parse_detections(result)
 
+            # Validate: Check if no detections
             if not detections:
-                # No detections - assume healthy
-                logger.info("No disease detections found - classifying as Healthy")
-                return {
-                    "disease": "Healthy",
-                    "confidence": 100.0,
-                    "severity": {"level": "None", "score": 0},
-                    "treatment": TREATMENTS.get("Healthy", {}).get("en", ""),
-                    "detections": [],
-                    "all_probabilities": {disease: 0.0 for disease in DISEASE_CLASSES},
-                    "model": "YOLOv8",
-                }
+                logger.warning("No detections found - image invalid")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid image detected. please upload clear image."
+                )
 
-            # Get top detection
+            # Get top detection (highest confidence)
             top_detection = max(detections, key=lambda x: x["confidence"])
             disease = top_detection["class_name"]
             confidence = top_detection["confidence"]
+
+            logger.info(f"Top detection - Disease: {disease}, Confidence: {confidence:.2f}%")
+
+            # Validate: Check confidence threshold (85%)
+            CONFIDENCE_THRESHOLD = 85.0
+            if confidence < CONFIDENCE_THRESHOLD:
+                logger.warning(
+                    f"Detection confidence {confidence:.2f}% below threshold {CONFIDENCE_THRESHOLD}%"
+                )
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid image detected. please upload clear image."
+                )
 
             # Calculate all probabilities (normalized from detections)
             all_probs = cls._calculate_probabilities(detections)

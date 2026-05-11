@@ -46,7 +46,7 @@ export const storage = {
   setAuthSession: (token, user, profile, language = 'en') => {
     storage.setToken(token)
     storage.setUser(user)
-    storage.setProfile({ ...user, role: 'user', language })
+    storage.setProfile({ ...user, role: user?.role || 'user', language })
     storage.setLanguage(language)
   },
 

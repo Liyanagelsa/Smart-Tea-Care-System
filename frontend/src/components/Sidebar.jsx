@@ -8,9 +8,10 @@ const Detect = '../../public/icons/Detect.png'
 const D_History = '../../public/icons/D_History.png'
 const Profile = '../../public/icons/Profile_W.png'
 const Logout = '../../public/icons/logout.png'
+const Admin = '../../public/icons/admin.png'
 
 export default function Sidebar() {
-  const { signOut, language } = useAuth()
+  const { signOut, language, isAdmin } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const t = getT(language)
@@ -20,6 +21,7 @@ export default function Sidebar() {
     { to: '/detect', icon: Detect, label: t('detect') },
     { to: '/history', icon: D_History, label: t('history') },
     { to: '/profile', icon: Profile, label: t('profile') },
+    ...(isAdmin ? [{ to: '/admin', icon: Admin, label: 'Admin' }] : []),
   ]
 
   const handleLogout = async () => {
