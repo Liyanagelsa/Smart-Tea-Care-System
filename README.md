@@ -1,35 +1,35 @@
-SmartTeaCare 🍃
+# SmartTeaCare 🍃
 
 An AI-Powered Tea Leaf Disease Detection and Treatment Recommendation System for Smart Tea Plantation Management in Sri Lanka.
 
 ---
 
-🎯 Project Overview
+# 🎯 Project Overview
 
 SmartTeaCare is a comprehensive Artificial Intelligence-powered web application developed to support the Sri Lankan tea cultivation industry through automated tea leaf disease detection and intelligent treatment recommendations.
 
 This final year university project combines:
 
-Deep Learning
-Computer Vision
-Modern Web Technologies
-Cloud Computing
-Smart Agriculture Concepts
+* Deep Learning
+* Computer Vision
+* Modern Web Technologies
+* Cloud Computing
+* Smart Agriculture Concepts
 
 to provide a localized, multilingual, and user-friendly disease management platform for tea farmers and plantation stakeholders.
 
 The system is capable of analyzing uploaded tea leaf images using a ResNet50 transfer learning model and generating:
 
-disease predictions,
-confidence scores,
-severity analysis,
-and treatment recommendations.
+* disease predictions,
+* confidence scores,
+* severity analysis,
+* and treatment recommendations.
 
 ---
 
-🌟 Key Features
+# 🌟 Key Features
 
-🍃 AI-Powered Tea Leaf Disease Detection
+## 🍃 AI-Powered Tea Leaf Disease Detection
 
 * Upload tea leaf images for instant disease analysis
 * Deep Learning-based classification using ResNet50
@@ -39,7 +39,7 @@ and treatment recommendations.
 
 ---
 
-💊 Treatment Recommendation System
+## 💊 Treatment Recommendation System
 
 * Disease-specific treatment guidance
 * Organic and chemical treatment suggestions
@@ -48,7 +48,7 @@ and treatment recommendations.
 
 ---
 
-🌐 Multilingual Support
+## 🌐 Multilingual Support
 
 The platform supports:
 
@@ -60,7 +60,7 @@ to improve accessibility for Sri Lankan tea farmers.
 
 ---
 
-📊 Detection History Management
+## 📊 Detection History Management
 
 * Store previous analyses
 * View historical disease records
@@ -69,7 +69,7 @@ to improve accessibility for Sri Lankan tea farmers.
 
 ---
 
-👤 User Management
+## 👤 User Management
 
 * Secure authentication system
 * User profile management
@@ -78,7 +78,7 @@ to improve accessibility for Sri Lankan tea farmers.
 
 ---
 
-🛡️ Admin Dashboard
+## 🛡️ Admin Dashboard
 
 * System statistics monitoring
 * User activity management
@@ -86,7 +86,7 @@ to improve accessibility for Sri Lankan tea farmers.
 
 ---
 
-🤖 AI Features
+# 🤖 AI Features
 
 * Deep Learning-based image classification
 * Transfer Learning using ResNet50
@@ -97,7 +97,7 @@ to improve accessibility for Sri Lankan tea farmers.
 
 ---
 
-🍂 Supported Disease Categories
+# 🍂 Supported Disease Categories
 
 The current system supports detection of:
 
@@ -110,9 +110,9 @@ The current system supports detection of:
 
 ---
 
-🛠️ Technical Architecture
+# 🛠️ Technical Architecture
 
-Frontend Stack
+# Frontend Stack
 
 * React.js
 * Vite
@@ -122,7 +122,7 @@ Frontend Stack
 
 ---
 
-Backend Stack
+# Backend Stack
 
 * FastAPI
 * Python
@@ -130,7 +130,7 @@ Backend Stack
 
 ---
 
-AI & Machine Learning
+# AI & Machine Learning
 
 * PyTorch
 * ResNet50 Transfer Learning
@@ -140,7 +140,7 @@ AI & Machine Learning
 
 ---
 
-Database & Cloud Services
+# Database & Cloud Services
 
 * Supabase
 * PostgreSQL
@@ -149,9 +149,9 @@ Database & Cloud Services
 
 ---
 
-🚀 Getting Started
+# 🚀 Getting Started
 
-📋 Prerequisites
+# 📋 Prerequisites
 
 Before running the project, ensure the following are installed:
 
@@ -162,7 +162,7 @@ Before running the project, ensure the following are installed:
 
 ---
 
-⚙️ Clone Repository
+# ⚙️ Clone Repository
 
 ```bash
 git clone https://github.com/Liyanagelsa/Smart-Tea-Care.git
@@ -171,7 +171,7 @@ cd Smart-Tea-Care
 
 ---
 
-🖥️ Frontend Setup
+# 🖥️ Frontend Setup
 
 Navigate to frontend directory:
 
@@ -199,7 +199,7 @@ http://localhost:5173
 
 ---
 
-⚙️ Backend Setup
+# ⚙️ Backend Setup
 
 Open another terminal and navigate to backend:
 
@@ -231,7 +231,7 @@ pip install -r requirements.txt
 
 ---
 
-🔐 Environment Variables
+# 🔐 Environment Variables
 
 Create a `.env` file inside backend directory:
 
@@ -242,7 +242,7 @@ SUPABASE_KEY=your_supabase_key
 
 ---
 
-▶️ Run Backend Server
+# ▶️ Run Backend Server
 
 ```bash
 uvicorn app:app --reload
@@ -256,9 +256,9 @@ http://127.0.0.1:8000
 
 ---
 
-📚 API Endpoints
+# 📚 API Endpoints
 
-Disease Detection
+# Disease Detection
 
 ```http
 POST /predict
@@ -268,7 +268,7 @@ Upload tea leaf images for disease detection.
 
 ---
 
-Authentication
+# Authentication
 
 ```http
 POST /auth/register
@@ -277,7 +277,7 @@ POST /auth/login
 
 ---
 
-Detection History
+# Detection History
 
 ```http
 GET /history
@@ -287,7 +287,7 @@ Retrieve previous disease analyses.
 
 ---
 
-👨‍💻 System Workflow
+# 👨‍💻 System Workflow
 
 1. User uploads tea leaf image
 2. Image preprocessing is performed
@@ -300,7 +300,7 @@ Retrieve previous disease analyses.
 
 ---
 
-🔬 Research Context
+# 🔬 Research Context
 
 This project was developed based on research areas including:
 
@@ -319,9 +319,48 @@ Key research influences include:
 
 ---
 
-👨‍🎓 Academic Information
+# 📸 System Screenshots
 
-This project was developed by Sandali Ashinsana as a Final Year Research Project for the:
+## Login Page
+
+* Multilingual authentication system
+* Responsive design
+
+## Disease Detection Interface
+
+* Leaf image upload
+* AI analysis interface
+
+## Prediction Results
+
+* Disease classification
+* Confidence analysis
+* Treatment guidance
+
+## Detection History
+
+* Historical disease tracking
+* Plantation monitoring support
+
+---
+
+# 📈 Future Improvements
+
+Planned future enhancements include:
+
+* Mobile application development
+* Offline prediction support
+* IoT sensor integration
+* Drone-based plantation monitoring
+* Weather forecasting integration
+* Advanced analytics dashboard
+* Real-time disease segmentation
+
+---
+
+# 👨‍🎓 Academic Information
+
+This project was developed as a Final Year Research Project for the:
 
 **BSc (Hons) Software Engineering Degree Programme**
 **Plymouth University**
@@ -331,14 +370,14 @@ Supervisor:
 
 ---
 
-📄 License
+# 📄 License
 
 This project was developed for academic and research purposes.
 All rights reserved.
 
 ---
 
-🙏 Acknowledgments
+# 🙏 Acknowledgments
 
 Special thanks to:
 
@@ -356,3 +395,4 @@ Repository Link:
 https://github.com/Liyanagelsa/Smart-Tea-Care
 
 ---
+
