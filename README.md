@@ -8,16 +8,6 @@ An AI-Powered Tea Leaf Disease Detection and Treatment Recommendation System for
 
 SmartTeaCare is a comprehensive Artificial Intelligence-powered web application developed to support the Sri Lankan tea cultivation industry through automated tea leaf disease detection and intelligent treatment recommendations.
 
-This final year university project combines:
-
-* Deep Learning
-* Computer Vision
-* Modern Web Technologies
-* Cloud Computing
-* Smart Agriculture Concepts
-
-to provide a localized, multilingual, and user-friendly disease management platform for tea farmers and plantation stakeholders.
-
 The system is capable of analyzing uploaded tea leaf images using a ResNet50 transfer learning model and generating:
 
 * disease predictions,
@@ -300,67 +290,9 @@ Retrieve previous disease analyses.
 
 ---
 
-# 🔬 Research Context
-
-This project was developed based on research areas including:
-
-* Deep Learning for Plant Disease Detection
-* Computer Vision in Agriculture
-* Smart Farming Technologies
-* Transfer Learning Applications
-* AI-based Agricultural Decision Support Systems
-
-Key research influences include:
-
-* Mohanty et al. (2016)
-* Ferentinos (2018)
-* Too et al. (2019)
-* He et al. (2016)
-
----
-
-# 📸 System Screenshots
-
-## Login Page
-
-* Multilingual authentication system
-* Responsive design
-
-## Disease Detection Interface
-
-* Leaf image upload
-* AI analysis interface
-
-## Prediction Results
-
-* Disease classification
-* Confidence analysis
-* Treatment guidance
-
-## Detection History
-
-* Historical disease tracking
-* Plantation monitoring support
-
----
-
-# 📈 Future Improvements
-
-Planned future enhancements include:
-
-* Mobile application development
-* Offline prediction support
-* IoT sensor integration
-* Drone-based plantation monitoring
-* Weather forecasting integration
-* Advanced analytics dashboard
-* Real-time disease segmentation
-
----
-
 # 👨‍🎓 Academic Information
 
-This project was developed as a Final Year Research Project for the:
+This project was developed by Sandali Ashinsana as a Final Year Research Project for the:
 
 **BSc (Hons) Software Engineering Degree Programme**
 **Plymouth University**
