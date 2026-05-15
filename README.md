@@ -1,219 +1,132 @@
-# SmartTeaCare 🍃
+# Smart Tea Care System 🍃
 
-An AI-Powered Tea Leaf Disease Detection and Treatment Recommendation System for Smart Tea Plantation Management in Sri Lanka.
+An AI-powered Tea Disease Detection and Farm Assistance System designed to revolutionize the tea cultivation industry through intelligent leaf disease detection using YOLO object detection technology.
 
 ---
 
 # 🎯 Project Overview
 
-SmartTeaCare is a comprehensive Artificial Intelligence-powered web application developed to support the Sri Lankan tea cultivation industry through automated tea leaf disease detection and intelligent treatment recommendations.
+Smart Tea Care System is a comprehensive AI-based solution developed to address major challenges faced in tea cultivation and disease management. This final year university project combines Artificial Intelligence, Computer Vision, and modern web technologies to improve tea leaf disease identification and support smart agriculture practices.
 
-The system is capable of analyzing uploaded tea leaf images using a ResNet50 transfer learning model and generating:
+The system specifically focuses on:
 
-* disease predictions,
-* confidence scores,
-* severity analysis,
-* and treatment recommendations.
+* Early detection of tea leaf diseases
+* Accurate identification of infected leaves
+* Real-time disease analysis using AI
+* Eliminating false detections from unrelated objects
+* Improving tea cultivation productivity through smart technology
+
+Unlike traditional image classification systems, this project uses YOLO object detection to accurately detect tea leaves and identify diseases only from relevant leaf regions.
 
 ---
 
 # 🌟 Key Features
 
-## 🍃 AI-Powered Tea Leaf Disease Detection
+## 🍃 Tea Disease Detection
 
-* Upload tea leaf images for instant disease analysis
-* Deep Learning-based classification using ResNet50
-* Real-time prediction results
-* Confidence percentage analysis
-* Severity level detection
+* AI-powered tea leaf disease detection
+* Real-time image analysis
+* Accurate disease identification using YOLO
+* Detection from complex backgrounds
+* Upload tea leaf images for instant prediction
 
----
+## 🤖 AI Features
 
-## 💊 Treatment Recommendation System
+* YOLO-based tea leaf detection model
+* Real-time image processing
+* High accuracy disease prediction
+* Smart object filtering to avoid false detections
 
-* Disease-specific treatment guidance
-* Organic and chemical treatment suggestions
-* Early disease management support
-* Practical agricultural recommendations
+## 💻 System Features
 
----
-
-## 🌐 Multilingual Support
-
-The platform supports:
-
-* English
-* Sinhala
-* Tamil
-
-to improve accessibility for Sri Lankan tea farmers.
-
----
-
-## 📊 Detection History Management
-
-* Store previous analyses
-* View historical disease records
-* Monitor plantation health trends
-* Track disease occurrences over time
-
----
-
-## 👤 User Management
-
-* Secure authentication system
-* User profile management
-* Profile image uploading
-* Cloud-based user data storage
-
----
-
-## 🛡️ Admin Dashboard
-
-* System statistics monitoring
-* User activity management
-* Disease detection analytics
-
----
-
-# 🤖 AI Features
-
-* Deep Learning-based image classification
-* Transfer Learning using ResNet50
-* PyTorch AI integration
-* Image preprocessing pipeline
-* Confidence score generation
-* Multi-class disease classification
-
----
-
-# 🍂 Supported Disease Categories
-
-The current system supports detection of:
-
-* Algal Leaf Spot
-* Brown Blight
-* Gray Blight
-* Red Leaf Spot
-* Helopeltis
-* Healthy Tea Leaves
+* User-friendly web interface
+* Image upload and prediction results
+* Disease information visualization
+* Fast and responsive frontend
+* Backend API integration
 
 ---
 
 # 🛠️ Technical Architecture
 
-# Frontend Stack
+## Backend Stack
+
+* Runtime: Node.js
+* Framework: React.js
+* AI Processing: Python
+* Object Detection: YOLO
+* Image Processing: OpenCV
+* API Integration: REST API
+
+## Frontend Stack
 
 * React.js
-* Vite
-* Tailwind CSS
-* Axios
-* React Router
+* HTML5
+* CSS3
+* JavaScript
 
----
+## AI / Machine Learning
 
-# Backend Stack
-
-* FastAPI
-* Python
-* Uvicorn
-
----
-
-# AI & Machine Learning
-
+* YOLO
+* OpenCV
 * PyTorch
-* ResNet50 Transfer Learning
-* TorchVision
-* PIL
-* NumPy
-
----
-
-# Database & Cloud Services
-
-* Supabase
-* PostgreSQL
-* Supabase Authentication
-* Supabase Storage
 
 ---
 
 # 🚀 Getting Started
 
-# 📋 Prerequisites
+## 📋 Prerequisites
 
-Before running the project, ensure the following are installed:
-
-* Node.js v18+
-* Python v3.10+
-* npm
+* Node.js
+* Python 3.8+
 * Git
+* npm
 
 ---
 
-# ⚙️ Clone Repository
+# ⚙️ Installation Guide
 
-```bash
-git clone https://github.com/Liyanagelsa/Smart-Tea-Care.git
-cd Smart-Tea-Care
+## Clone the Repository
+
+```bash id="jexg7h"
+git clone https://github.com/Liyanagelsa/Smart-Tea-Care-System.git
 ```
 
----
-
-# 🖥️ Frontend Setup
-
-Navigate to frontend directory:
-
-```bash
-cd frontend
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run development server:
-
-```bash
-npm run dev
-```
-
-Frontend will run on:
-
-```bash
-http://localhost:5173
+```bash id="mcx4md"
+cd Smart-Tea-Care-System
 ```
 
 ---
 
-# ⚙️ Backend Setup
+# 🔧 Backend Setup (FastAPI)
 
-Open another terminal and navigate to backend:
+## Navigate to Backend Directory
 
 ```bash
 cd backend
 ```
 
-Create virtual environment:
+---
 
-## Windows
+## Create Virtual Environment
+
+### Windows
 
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
-## Linux/macOS
+### Linux / macOS
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-Install Python dependencies:
+---
+
+## Install Python Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -221,110 +134,61 @@ pip install -r requirements.txt
 
 ---
 
-# 🔐 Environment Variables
-
-Create a `.env` file inside backend directory:
-
-```env
-SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_key
-```
-
----
-
-# ▶️ Run Backend Server
+## Start FastAPI Server
 
 ```bash
-uvicorn app:app --reload
+python main.py
 ```
 
-Backend API runs on:
+Backend server will run on:
 
 ```bash
-http://127.0.0.1:8000
+http://127.0.0.1:8000/docs
+```
+
+# 💻 Frontend Setup
+
+```bash id="u9ekyl"
+cd frontend
+npm install
 ```
 
 ---
 
-# 📚 API Endpoints
+# 🔑 Test Account Credentials
 
-# Disease Detection
+User Account
+Email: sandali@gmail.com
+Password: Sandali@1234
 
-```http
-POST /predict
-```
+Admin Account
+Email: admin@gmail.com
+Password: Admin@1234
 
-Upload tea leaf images for disease detection.
+# 🎯 Objectives
 
----
-
-# Authentication
-
-```http
-POST /auth/register
-POST /auth/login
-```
-
----
-
-# Detection History
-
-```http
-GET /history
-```
-
-Retrieve previous disease analyses.
+* Improve tea disease detection accuracy
+* Reduce manual disease inspection
+* Support tea farmers with AI technology
+* Enhance smart agriculture solutions
+* Improve disease management efficiency
 
 ---
 
-# 👨‍💻 System Workflow
+# 👨‍💻 Developer
 
-1. User uploads tea leaf image
-2. Image preprocessing is performed
-3. AI model analyzes the image
-4. Disease prediction is generated
-5. Confidence score is calculated
-6. Severity level is determined
-7. Treatment recommendation is displayed
-8. Detection history is stored in database
+* Liyanage LSA
 
 ---
 
-# 👨‍🎓 Academic Information
+# 🎓 Academic Information
 
-This project was developed by Sandali Ashinsana as a Final Year Research Project for the:
-
-**BSc (Hons) Software Engineering Degree Programme**
-**Plymouth University**
-
-Supervisor:
-**Ms. Dulanjali Wijesekara**
+This project is a final year university submission developed for academic and research purposes.
 
 ---
 
 # 📄 License
 
-This project was developed for academic and research purposes.
-All rights reserved.
+This project is intended for educational and research purposes only.
 
 ---
-
-# 🙏 Acknowledgments
-
-Special thanks to:
-
-* Project supervisor and academic staff
-* Tea farming communities
-* Open-source contributors
-* PyTorch, React, FastAPI, and Supabase communities
-
----
-
-# 🔗 GitHub Repository
-
-Repository Link:
-
-https://github.com/Liyanagelsa/Smart-Tea-Care
-
----
-
